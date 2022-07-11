@@ -19,7 +19,12 @@ class Userform extends React.Component {
       mobile: '',
       mobileError: '',
       isModalVisible: false,
-      secureTextEntry: true
+      secureTextEntry: true,
+      house: '',
+      street: '',
+      area: '',
+      state: '',
+      city: ''
     }
   }
 
@@ -111,7 +116,7 @@ class Userform extends React.Component {
   render() {
 
     let { input, header, button, press, modal, child, headline, modaldata
-      , place1, place2, place3, place4, place5, place6
+      , place1, place2, place3, place4, place5, place6, addstyle
     } = this.props;
 
     return (
@@ -170,13 +175,12 @@ class Userform extends React.Component {
 
         <View>
 
-          <TextInput placeholder={place5}
-            style={input}
+          <TextInput style={input} placeholder={place5}
+            // style={input}
             onBlur={() => this.addressValidator()}
             onChangeText={(text) => this.setState({ address: text })} />
 
           <Text style={{ color: "red" }}>{"\n"} {this.state.addressError}</Text>
-
 
         </View>
 
@@ -187,6 +191,7 @@ class Userform extends React.Component {
             onChangeText={(text) => this.setState({ mobile: text })} />
 
           <Text style={{ color: "red" }}>{"\n"} {this.state.mobileError}</Text>
+
 
         </View>
 
@@ -199,6 +204,8 @@ class Userform extends React.Component {
           >
             <Text style={press}>Submit</Text>
           </TouchableOpacity>
+
+
 
           <Modal
             animationType="slide"
