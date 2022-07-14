@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button, Modal, KeyboardAvoidingView } from "react-native";
+import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, Button, Modal, ScrollView, SafeAreaView } from "react-native";
+import TxtComponent from "./txtcomponent";
+import ModalComponent from "./modalcomp";
 
 class Userform extends React.Component {
 
@@ -21,67 +23,52 @@ class Userform extends React.Component {
       isModalVisible: false,
       secureTextEntry: true,
       house: '',
+      houseError: '',
       street: '',
-      area: '',
+      streetError: '',
+      city: '',
+      cityError: '',
       state: '',
-      city: ''
+      stateError: ''
     }
   }
-
   nameValidator() {
-    if (this.state.name == "") {
-      this.setState({ nameError: "please enter your name" })
-    }
-    else {
+    this.state.name == '' ? this.setState({ nameError: "please enter your name" }) :
       this.setState({ nameError: "" })
-    }
   }
-
   emailValidator() {
-    if (this.state.email == "") {
-      this.setState({ emailError: "please enter your email id" })
-    }
-    else {
+    this.state.email == "" ? this.setState({ emailError: "please enter your email id" }) :
       this.setState({ emailError: "" })
-    }
   }
-
   passwordValidator() {
-    if (this.state.password == "") {
-      this.setState({ passwordError: "please enter password" })
-    }
-    else {
+    this.state.password == '' ? this.setState({ passwordError: "please enter password" }) :
       this.setState({ passwordError: "" })
-    }
   }
-
   confirmValidator() {
-    if (this.state.password !== this.state.confirmPassword) {
-      this.setState({ passwordErrorMessage: "password and confirm password should be same" })
-    }
-    else {
+    this.state.password !== this.state.confirmPassword ?
+      this.setState({ passwordErrorMessage: "password and confirm password should be same" }) :
       this.setState({ passwordErrorMessage: "" })
-    }
   }
-
-  addressValidator() {
-    if (this.state.address == "") {
-      this.setState({ addressError: "please enter address" })
-    }
-    else {
-      this.setState({ addressError: "" })
-    }
+  houseValidator() {
+    this.state.house == '' ? this.setState({ houseError: 'please enter house no.' }) :
+      this.setState({ houseError: '' })
   }
-
-  mobileValidator() {
-    if (this.state.mobile == "") {
-      this.setState({ mobileError: "please enter your mobile no." })
-    }
-    else {
+  streetValidator() {
+    this.state.street == '' ? this.setState({ streetError: 'please enter street no.' }) :
+      this.setState({ streetError: '' })
+  }
+  cityValidator() {
+    this.state.city == '' ? this.setState({ cityError: 'please enter city name' }) :
+      this.setState({ cityError: '' })
+  }
+  stateValidator() {
+    this.state.state == '' ? this.setState({ stateError: 'please enter house no.' }) :
+      this.setState({ stateError: '' })
+  }
+  mobileValidator = () => {
+    this.state.mobile == "" ? this.setState({ mobileError: "please enter your mobile no." }) :
       this.setState({ mobileError: "" })
-    }
   }
-
   buttonValidator = () => {
     if (this.state.name === '') {
       this.setState({ isModalVisible: false })
@@ -95,7 +82,16 @@ class Userform extends React.Component {
     else if (this.state.confirmPassword === '') {
       this.setState({ isModalVisible: false })
     }
-    else if (this.state.address === '') {
+    else if (this.state.house === '') {
+      this.setState({ isModalVisible: false })
+    }
+    else if (this.state.street === '') {
+      this.setState({ isModalVisible: false })
+    }
+    else if (this.state.city === '') {
+      this.setState({ isModalVisible: false })
+    }
+    else if (this.state.state === '') {
       this.setState({ isModalVisible: false })
     }
     else if (this.state.mobile === '') {
@@ -105,141 +101,100 @@ class Userform extends React.Component {
       this.setState({ isModalVisible: true })
     }
   }
-
-  setModalVisible = () => {
-    this.setState({ isModalVisible: true })
-  }
+  setModalVisible = () => this.setState({ isModalVisible: true })
   closeModal = () => {
     this.setState({ isModalVisible: false })
   }
 
   render() {
 
-    let { input, header, button, press, modal, child, headline, modaldata
-      , place1, place2, place3, place4, place5, place6, addstyle
-    } = this.props;
-
     return (
-      <View style={header}>
-        <Text style={headline}>Login</Text>
+      <SafeAreaView>
+        <ScrollView>
+          <Text style={styles.headerline}>Login</Text>
 
-        <View>
-
-          <TextInput placeholder={place1}
-            autoCapitalize="none"
-            style={input}
-
+          <TxtComponent
+            name="Full Name"
+            placeholder="Enter your full name"
             onBlur={() => this.nameValidator()}
-            onChangeText={(text) => this.setState({ name: text })} />
+            onChangeText={(text) => this.setState({ name: text })}   />
 
           <Text style={{ color: "red" }}>{"\n"} {this.state.nameError}</Text>
 
-        </View>
-
-        <View>
-          <TextInput placeholder={place2}
-            style={input}
+          <TxtComponent
+            name="Email"
+            placeholder="Enter your email"
             onBlur={() => this.emailValidator()}
             onChangeText={(text) => this.setState({ email: text })} />
-
           <Text style={{ color: "red" }}>{"\n"} {this.state.emailError}</Text>
 
-        </View>
-
-        <View>
-
-          <TextInput placeholder={place3}
-            style={input}
-            keyboardType="numeric"
-            maxLength={5}
+          <TxtComponent
+            name="Password"
+            placeholder="Enter your password"
             onBlur={() => this.passwordValidator()}
-            onChangeText={(text) => this.setState({ password: text })}
-            secureTextEntry={true}
-          />
-
+            onChangeText={(text) => this.setState({ password: text })} />
           <Text style={{ color: "red" }}>{"\n"} {this.state.passwordError}</Text>
-        </View>
 
-        <View>
-          <TextInput placeholder={place4}
-            style={input}
-            secureTextEntry={true}
-            maxLength={5}
+          <TxtComponent
+            name="Confirm Password"
+            placeholder="Enter your valid password"
             onBlur={() => this.confirmValidator()}
-            onChangeText={(text) => this.setState({ confirmPassword: text })}
-          />
+            onChangeText={(text) => this.setState({ confirmPassword: text })} />
+          <Text style={{ color: "red" }}>{this.state.passwordErrorMessage}</Text>
 
-          <Text style={{ color: "red" }}>{"\n"} {this.state.passwordErrorMessage}</Text>
+          <Text style={{ marginLeft: 10 }}>Address</Text>
+          <TxtComponent placeholder='House/Flat Number'
+            onBlur={() => this.houseValidator()}
+            onChangeText={(text) => this.setState({ house: text })} />
+          <Text style={{ color: "red" }}>{this.state.houseError}</Text>
 
-        </View>
+          <TxtComponent placeholder='Street'
+            onBlur={() => this.streetValidator()}
+            onChangeText={(text) => this.setState({ street: text })} />
+          <Text style={{ color: "red" }}>{this.state.streetError}</Text>
 
-        <View>
+          <TxtComponent placeholder='Area/Locality(optional)' />
 
-          <TextInput style={input} placeholder={place5}
-            // style={input}
-            onBlur={() => this.addressValidator()}
-            onChangeText={(text) => this.setState({ address: text })} />
+          <TxtComponent placeholder='City'
+            onBlur={() => this.cityValidator()}
+            onChangeText={(text) => this.setState({ city: text })} />
+          <Text style={{ color: "red" }}>{this.state.cityError}</Text>
 
-          <Text style={{ color: "red" }}>{"\n"} {this.state.addressError}</Text>
+          <TxtComponent placeholder='State'
+            onBlur={() => this.stateValidator()}
+            onChangeText={(text) => this.setState({ state: text })} />
+          <Text style={{ color: "red" }}>{this.state.stateError}</Text>
 
-        </View>
-
-        <View>
-          <TextInput placeholder={place6}
-            style={input}
+          <TxtComponent
+            name='Mobile No.'
+            placeholder='Enter your mobile number'
             onBlur={() => this.mobileValidator()}
             onChangeText={(text) => this.setState({ mobile: text })} />
+          <Text style={{ color: "red" }}>{this.state.mobileError}</Text>
 
-          <Text style={{ color: "red" }}>{"\n"} {this.state.mobileError}</Text>
+          <Button title="Submit" onPress={() => this.buttonValidator()}></Button>
 
-
-        </View>
-
-
-        <View style={button}>
-          <TouchableOpacity
-            onPress={() => this.buttonValidator()}
-
-          // onPress={()=>{this.setModalVisible(true)} }
-          >
-            <Text style={press}>Submit</Text>
-          </TouchableOpacity>
-
-
-
-          <Modal
-            animationType="slide"
-            transparent={true}
+          <ModalComponent
             visible={this.state.isModalVisible == true}
-          >
-
-            <View style={modal}>
-              <View style={child}>
-                {/* <Text style={{ fontSize: 15 }}>
-                  please ckeck filled information....</Text> */}
-                <Text style={{ fontSize: 15 }}>{modaldata}</Text>
-
-                <Text>Name: {this.state.name}</Text>
-                <Text>Email: {this.state.email}</Text>
-                <Text>Password: {this.state.password}</Text>
-                <Text>Confirm: Password: {this.state.confirmPassword}</Text>
-                <Text>Address: {this.state.address}</Text>
-                <Text>Mobile No. : {this.state.mobile}</Text>
-
-                <Button title="Close Modal"
-                  onPress={() => { this.closeModal() }} />
-
-              </View>
-            </View>
-
-          </Modal>
-
-        </View>
-
-      </View>
-
+            name={this.state.name}
+            email={this.state.email}
+            password={this.state.password}
+            confirmPassword={this.state.confirmPassword}
+            house={this.state.house}
+            street={this.state.street}
+            city={this.state.city}
+            state={this.state.state}
+            mobile={this.state.mobile}
+            touchmodal={() => { this.closeModal() }}
+          />
+        </ScrollView>
+      </SafeAreaView>
     )
   }
 }
-
+const styles = StyleSheet.create({
+  headerline: {
+    fontSize: 25, fontWeight: "900", textAlign: "center"
+  }
+})
 export default Userform;

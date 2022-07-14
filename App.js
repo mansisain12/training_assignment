@@ -1,11 +1,10 @@
 import React from "react";
-import Login from "./screens/login";
+import { StyleSheet } from "react-native";
+import Userform from "./screens/userform";
 
 const App = () => {
-  return(
-    <Login />
-
+  return (
+    <Userform />
   )
 }
-
 export default App;
